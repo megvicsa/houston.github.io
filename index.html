@@ -69,6 +69,12 @@
             border: 1px solid #ccc;
         }
 
+        .popup-content {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+
         .popup-button {
             background-color: #bbb8b8;
             color: black;
@@ -388,17 +394,23 @@
         function generatePopupContent(station) {
             const encodedImageUrl = encodeURIComponent(station.imageUrl);
             return `
-                <h3>${station.name}</h3>
-                <img src="${decodeURIComponent(encodedImageUrl)}" alt="${station.name}" style="width:100%;max-width:300px;">
-                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'location', '${station.location}')">Location</button>
-                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'waitTime', '${station.waitTime}')">Wait Time</button>
-                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'plugs', '${station.plugs}')">Plugs</button>
-                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'chargeTime', '${station.chargeTime}')">Charge Time</button>
-                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'socketAvalability', '${station.socketAvalability}')">Socket Availability</button>
-                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'energySource', '${station.energySource}')">Energy Source</button>
-                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'fees', '${station.fees}')">Fees</button>
-                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'parking', '${station.parking}')">Parking</button>
-                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'rating', '${station.rating}')">Rating</button>
+                <div class="popup-content">
+                    <h3>${station.name}</h3>
+                    <img src="${decodeURIComponent(encodedImageUrl)}" alt="${station.name}" style="width:100%;max-width:300px;">
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'location', '${station.location}')">Location</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'originDistance', '${station.originDistance}')">Distance from Start</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'originTime', '${station.originTime}')">Travel Time from Start</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'destDistance', '${station.destDistance}')">Distance to Destination</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'destTime', '${station.destTime}')">Travel Time to Destination</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'waitTime', '${station.waitTime}')">Wait Time</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'plugs', '${station.plugs}')">Plugs</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'chargeTime', '${station.chargeTime}')">Charge Time</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'socketAvalability', '${station.socketAvalability}')">Socket Availability</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'energySource', '${station.energySource}')">Energy Source</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'fees', '${station.fees}')">Fees</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'parking', '${station.parking}')">Parking</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'rating', '${station.rating}')">Rating</button>
+                </div>
                 `;
         }
 
