@@ -372,8 +372,7 @@
                 el.innerHTML = '⚡';
                 el.style.fontSize = '32px';
 
-                const encodedImageUrl = encodeURIComponent(station.imageUrl);
-                const popupContent = generatePopupContent(station.name, station.plugs, encodedImageUrl, station.coordinates, station.rating, station.parking, station.fees);
+                const popupContent = generatePopupContent(station);
 
                 new mapboxgl.Marker({ element: el })
                     .setLngLat(station.coordinates)
@@ -386,58 +385,49 @@
         }
 
         // Function to generate popup content for charging stations
-        function generatePopupContent(stationName, plugs, encodedImageUrl, stationPosition, stationRating, stationParking, stationFees) {
-            if (stationName === chargingStations[0].name) {
-                fixedPoint = fixedPoint1;
-            } else {
-                fixedPoint = fixedPoint2;
-            }
+        function generatePopupContent(station) {
+            const encodedImageUrl = encodeURIComponent(station.imageUrl);
             return `
-                <h3>${stationName}</h3>
-                <img src="${decodeURIComponent(encodedImageUrl)}" alt="${stationName}" style="width:100%;max-width:300px;">
-                <button class="popup-button" onclick="showMoreInfo('${stationName}', 'chargers', '${plugs}', '${encodedImageUrl}', '${stationPosition}', '${stationRating}', '${stationParking}', '${stationFees}')">Chargers</button>
-                <button class="popup-button" onclick="showMoreInfo('${stationName}', 'fee', '${plugs}', '${encodedImageUrl}', '${stationPosition}', '${stationRating}', '${stationParking}', '${stationFees}')">Charging Fee</button>
+                <h3>${station.name}</h3>
+                <img src="${decodeURIComponent(encodedImageUrl)}" alt="${station.name}" style="width:100%;max-width:300px;">
+                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'location', '${station.location}')">Location</button>
+                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'waitTime', '${station.waitTime}')">Wait Time</button>
+                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'plugs', '${station.plugs}')">Plugs</button>
+                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'chargeTime', '${station.chargeTime}')">Charge Time</button>
+                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'socketAvalability', '${station.socketAvalability}')">Socket Availability</button>
+                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'energySource', '${station.energySource}')">Energy Source</button>
+                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'fees', '${station.fees}')">Fees</button>
+                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'parking', '${station.parking}')">Parking</button>
+                <button class="popup-button" onclick="showMoreInfo('${station.name}', 'rating', '${station.rating}')">Rating</button>
                 `;
         }
 
         // Function to show more information about a charging station
-        function showMoreInfo(stationName, infoType, plugs, encodedImageUrl, stationPosition, stationRating, stationParking, stationFees) {
+        function showMoreInfo(stationName, infoType, infoContent) {
             logAction(`Button clicked: ${infoType} for ${stationName}`);
 
-            let content = "";
-            switch (infoType) {
-                case "chargers":
-                    content = `<p>${plugs}</p>`;
-                    break;
-                case "fee":
-                    content = `<p>${stationFees}</p>`;
-                    break;
-                case "parking":
-                    content = `<p>${stationParking}</p>`;
-                    break;
-                case "rating":
-                    content = `<p>${stationRating}</p>`;
-                    break;
-            }
+            const content = `<p>${infoContent}</p>`;
 
             const popups = document.getElementsByClassName('mapboxgl-popup-content');
             if (popups.length > 0) {
                 popups[0].innerHTML = `
                     <h3>${stationName}</h3>
                     ${content}
-                    <button class="popup-button" onclick="restoreOriginalContent('${stationName}', '${plugs}', '${encodedImageUrl}', '${stationPosition}', '${stationRating}', '${stationParking}', '${stationFees}')">Back</button>
+                    <button class="popup-button" onclick="restoreOriginalContent('${stationName}')">Back</button>
                 `;
             }
         }
 
         // Function to restore the original content of the popup
-        function restoreOriginalContent(stationName, plugs, encodedImageUrl, stationPosition, stationRating, stationParking, stationFees) {
+        function restoreOriginalContent(stationName) {
+            const station = chargingStations.find(station => station.name === stationName);
             const popups = document.getElementsByClassName('mapboxgl-popup-content');
             if (popups.length > 0) {
-                popups[0].innerHTML = generatePopupContent(stationName, plugs, encodedImageUrl, stationPosition, stationRating, stationParking, stationFees);
+                popups[0].innerHTML = generatePopupContent(station);
             }
             logAction(`Back button clicked for ${stationName}`);
         }
+
 
         // Function to fetch and display the time between two points
         async function getTime(startPoint, endPoint) {
