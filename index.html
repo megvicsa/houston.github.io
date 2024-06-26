@@ -71,7 +71,7 @@
         }
 
         .popup-content {
-            max-height: 300px;
+            max-height: 330px;
             overflow-y: auto;
         }
 
@@ -128,13 +128,13 @@
     <!-- Map container -->
     <div id='map'></div>
     <!-- Manual div providing instructions to the user -->
-    <!--<div id="manual">
+    <div id="manual">
         <h3>Map Guide</h3>
         <p>This map displays pre-set start and end points for your trip.</p>
         <p>Look for the ⚡ symbol to find two available charging stations along your route.</p>
         <p>Click on any station to view more details about it.</p>
         <p>For navigation, simply click on any two points on the map to get the trip duration and route information.</p>
-    </div>-->
+    </div>
 
     <!-- Instructions div displaying general information about the trip -->
      <div id="instructions">
@@ -144,8 +144,8 @@
          <p>Address of destination (red): 13551 Westpark Dr, Houston, TX 77082</p>
          <p>Distance of destination: 28.8 Miles</p>
          <p>Estimated travel time to destination: 40 minutes</p>
-         <p>State of charge of battery: 10% Charge</p>
-         <p>Range of current battery: 30 Minutes</p>
+         <p>State of charge of battery: 15% Charge</p>
+         <p>Range of current battery: 45 Minutes</p>
      </div>
 
     <!-- Log box div displaying user actions and providing a button to copy logs -->
@@ -418,7 +418,7 @@
             const encodedImageUrl = encodeURIComponent(station.imageUrl);
             return `
                 <div class="popup-content">
-                    <h3>${station.name}</h3>
+                    <h3 style="font-size: 20px; margin-top: 0; margin-bottom: 10px;">${station.name}</h3>
                     <img src="${decodeURIComponent(encodedImageUrl)}" alt="${station.name}" style="width:100%;max-width:300px;">
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'location', '${station.location}')">Location</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'originDistance', '${station.originDistance}')">Distance from Start</button>
@@ -444,14 +444,16 @@
         function showMoreInfo(stationName, infoType, infoContent) {
             logAction(`Button clicked: ${infoType} for ${stationName}`);
 
-            const content = `<p>${infoContent}</p>`;
+            const content = `<p style="font-size: 16px; padding: 5px;">${infoContent}</p>`;
 
             const popups = document.getElementsByClassName('mapboxgl-popup-content');
             if (popups.length > 0) {
                 popups[0].innerHTML = `
-                    <h3>${stationName}</h3>
-                    ${content}
-                    <button class="popup-button" onclick="restoreOriginalContent('${stationName}')">Back</button>
+                    <div style="max-height: 500px; max-width: 400px; padding: 10px;">
+                        <h3 style="font-size: 20px; margin-top: 0; margin-bottom: 10px;">${stationName}</h3>
+                        ${content}
+                        <button class="popup-button" style="font-size: 18px; padding: 10px 20px;" onclick="restoreOriginalContent('${stationName}')">Back</button>
+                    </div>
                 `;
             }
         }
