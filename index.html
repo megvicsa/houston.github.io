@@ -154,9 +154,19 @@
         <p>For navigation, simply click on any two points on the map to get the trip duration and route information.</p>
     </div>
 
+
+    <!--<div id="instructions">
+        @@ -144,8 +144,8 @@ <h3>General Info</h3>
+             <p>Address of destination (red): 13551 Westpark Dr, Houston, TX 77082</p>
+             <p>Distance of destination: 28.8 Miles</p>
+             <p>Estimated travel time to destination: 40 minutes</p>
+             <p>State of charge of battery: 15% Charge</p>
+             <p>Range of current battery: 45 Minutes</p>
+         </div>-->
+
     <!-- Instructions div displaying general information about the trip -->
     <div id="instructions">
-        <h3>General Info</h3>
+        <h2>General Info</h2>
     </div>    
 
     <!-- Log box div displaying user actions and providing a button to copy logs -->
@@ -462,24 +472,6 @@
                 `;
         }
 
-
-        // Function to create instruction buttons
-        function createInstructionButtons() {
-            const instructionsDiv = document.getElementById('instructions');
-            
-            instructions.forEach((instruction, index) => {
-                const button = document.createElement('button');
-                button.className = 'instruction-button';
-                button.textContent = instruction.title;
-                button.style.fontSize = '16px';
-                button.style.padding = '10px';
-                button.style.margin = '5px';
-                button.style.width = '100%';
-                button.onclick = () => showInstructionInfo(index);
-                instructionsDiv.appendChild(button);
-            });
-        }
-
         // Function to show more information about a charging station
         function showMoreInfo(stationName, infoType, infoContent) {
             logAction(`Button clicked: ${infoType} for ${stationName}`);
@@ -498,37 +490,6 @@
             }
         }
 
-        // Function to show instruction information
-        function showInstructionInfo(index) {
-            const instruction = instructions[index];
-            logAction(`Button clicked: ${instruction.title}`);
-
-            const content = `<p style="font-size: 16px; padding: 5px;">${instruction.info}</p>`;
-
-            const popups = document.getElementsByClassName('mapboxgl-popup-content');
-            if (popups.length > 0) {
-                popups[0].innerHTML = `
-                    <div style="max-height: 500px; max-width: 400px; padding: 10px;">
-                        <h3 style="font-size: 20px; margin-top: 0; margin-bottom: 10px;">${instruction.title}</h3>
-                        ${content}
-                        <button class="popup-button" style="font-size: 18px; padding: 10px 20px;" onclick="closePopup()">Close</button>
-                    </div>
-                `;
-            }
-        }
-
-        // Function to close the popup
-        function closePopup() {
-            const popups = document.getElementsByClassName('mapboxgl-popup-content');
-            if (popups.length > 0) {
-                popups[0].innerHTML = '';
-            }
-        }
-
-        // Call the function to create buttons when the page loads
-        createInstructionButtons();
-
-
         // Function to restore the original content of the popup
         function restoreOriginalContent(stationName) {
             const station = chargingStations.find(station => station.name === stationName);
@@ -539,6 +500,62 @@
             logAction(`Back button clicked for ${stationName}`);
         }
 
+        // Function to create instruction buttons
+        function createInstructionButtons() {
+            const instructionsDiv = document.getElementById('instructions');
+            
+            instructions.forEach((instruction, index) => {
+                const button = document.createElement('button');
+                button.className = 'instruction-button';
+                button.textContent = instruction.title;
+                button.style.fontSize = '16px';
+                button.style.padding = '10px';
+                button.style.margin = '5px';
+                button.style.width = '100%';
+                button.onclick = () => showInstructionInfo(index);
+                instructionsDiv.appendChild(button);
+            });
+        }
+
+        // Function to show instruction information using the Map Guide popup
+        function showInstructionInfo(index) {
+            const instruction = instructions[index];
+            logAction(`Button clicked: ${instruction.title}`);
+
+            const content = `<p style="font-size: 16px; padding: 5px;">${instruction.info}</p>`;
+
+            const manualDiv = document.getElementById('manual');
+            if (manualDiv) {
+                manualDiv.innerHTML = `
+                    <h3 style="font-size: 20px; margin-top: 0; margin-bottom: 10px;">${instruction.title}</h3>
+                    ${content}
+                    <button class="popup-button" style="font-size: 18px; padding: 10px 20px;" onclick="handleBackButtonClick('${instruction.title}')">Back</button>
+                `;
+            }
+        }
+
+        function handleBackButtonClick(title) {
+            logAction(`Back button clicked for ${title}`);
+            restoreMapGuide();
+        }
+
+        // Function to restore the original Map Guide content
+        function restoreMapGuide() {
+            const manualDiv = document.getElementById('manual');
+            if (manualDiv) {
+                manualDiv.innerHTML = `
+                    <h3>Map Guide</h3>
+                    <p>This map displays pre-set start and end points for your trip.</p>
+                    <p>Look for the ⚡ symbol to find two available charging stations along your route.</p>
+                    <p>Click on any station to view more details about it.</p>
+                    <p>For navigation, simply click on any two points on the map to get the trip duration and route information.</p>
+                `;
+            }
+
+        }
+
+        // Call the function to create buttons when the page loads
+        createInstructionButtons();
 
         // Function to fetch and display the time between two points
         async function getTime(startPoint, endPoint) {
