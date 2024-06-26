@@ -128,15 +128,15 @@
     <!-- Map container -->
     <div id='map'></div>
     <!-- Manual div providing instructions to the user -->
-<!--     <div id="manual">
+    <div id="manual">
         <h3>Map Guide</h3>
         <p>This map displays pre-set start and end points for your trip.</p>
         <p>Look for the ⚡ symbol to find two available charging stations along your route.</p>
         <p>Click on any station to view more details about it.</p>
         <p>For navigation, simply click on any two points on the map to get the trip duration and route information.</p>
-    </div> -->
+    </div>
 
-    
+    <!-- Instructions div displaying general information about the trip -->
      <div id="instructions">
          <h3>General Info</h3>
          <p>Current time: 4:37 PM</p>
@@ -286,6 +286,7 @@
         }
 
         // Function to fetch and display the route between start and end points
+        /*
         async function getRoute() {
             if (!startPoint || !endPoint) return;
 
@@ -339,6 +340,7 @@
             )} min 🚗</strong></p><ol>${tripInstructions}</ol>`;
             logAction(`Route calculated: ${data.legs[0].summary}`);
         }
+        */
 
         // Function to add an emoji marker at a specific point on the map
         function addEmojiMarker(point) {
