@@ -41,14 +41,15 @@
 
         #instructions {
             position: absolute;
-            left: 20px;
+            left: 30px;
             top: calc(40% + 10px);
             width: 20%;
             bottom: 10%;
-            padding: 20px;
+            padding: 10px;
             background-color: #fff;
             overflow-y: scroll;
             font-family: sans-serif;
+            font-size: 14px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border: 1px solid #ccc;
@@ -135,6 +136,18 @@
         <p>For navigation, simply click on any two points on the map to get the trip duration and route information.</p>
     </div>
 
+    
+     <div id="instructions">
+         <h3>General Info</h3>
+         <p>Current time: 4:37 PM</p>
+         <p>Address of origin (blue): Shadow Creek High School, 11850 Broadway St, Pearland, TX 77584</p>
+         <p>Address of destination (red): 13551 Westpark Dr, Houston, TX 77082</p>
+         <p>Distance of destination: 28.8 Miles</p>
+         <p>Estimated travel time to destination: 40 minutes</p>
+         <p>State of charge of battery: 10% Charge</p>
+         <p>Range of current battery: 30 Minutes</p>
+     </div>
+
     <!-- Log box div displaying user actions and providing a button to copy logs -->
     <div id="log-box">
         <h3>Click Logs</h3>
@@ -149,12 +162,12 @@
             container: 'map',
             style: 'mapbox://styles/mapbox/navigation-day-v1',
             center: [-95.53750552083278,29.639204449599802],
-            zoom: 11
+            zoom: 10
         });
 
         // Define geographical bounds for the map
         const bounds = [
-            [-95.776936, 29.532870],
+            [-95.787936, 29.502870],
             [-95.306648, 29.770314]
         ];
         map.setMaxBounds(bounds);
@@ -172,7 +185,7 @@
         const chargingStations = [
             {
                 coordinates: [-95.626936, 29.592870],
-                imageUrl: 'https://lh5.googleusercontent.com/p/AF1QipMxbI3sgkLQH0icgQW5DEUxg57XsMSVUQBk_l1q=w408-h306-k-no',
+                imageUrl: 'https://photos.plugshare.com/photos/638842.jpg',
                 name: 'First Colony Mall - Lululemon',
 
                 location: '16535 Southwest Fwy STE 2004, Sugar Land, TX 77479, USA',
