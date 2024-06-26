@@ -203,6 +203,10 @@
 
                 fees: 'Free charging',
                 parking: 'Free parking',
+
+                coffee: 'Yes',
+                grocery: 'No',
+                sportsClothes: 'Yes',
                 
                 rating: '⭐⭐⭐' 
             },
@@ -226,6 +230,10 @@
 
                 fees: '$0.39/kWh for Blink Members, $0.49/kWh for Blink Guests',
                 parking: 'Free parking',
+
+                coffee: 'Yes',
+                grocery: 'Yes',
+                sportsClothes: 'No',
                 
                 rating: '⭐⭐'
             }
@@ -424,6 +432,9 @@
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'energySource', '${station.energySource}')">Energy Source</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'fees', '${station.fees}')">Fees</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'parking', '${station.parking}')">Parking</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'coffee', '${station.coffee}')">Coffee Shop</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'grocery', '${station.grocery}')">Grocery Store</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'sportsClothes', '${station.sportsClothes}')">Sport/Clothing Store</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'rating', '${station.rating}')">Rating</button>
                 </div>
                 `;
