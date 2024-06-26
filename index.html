@@ -120,6 +120,24 @@
         #copy-button:hover {
             background-color: #0056b3;
         }
+
+        .popup-button, .instruction-button {
+            background-color: #bbb8b8;
+            color: black;
+            border: none;
+            padding: 8px 16px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+            font-family: sans-serif;
+        }
+
+        .popup-button:hover, .instruction-button:hover {
+            background-color: #0056b3;
+        }
+
     </style>
 </head>
 
@@ -137,16 +155,9 @@
     </div>
 
     <!-- Instructions div displaying general information about the trip -->
-     <div id="instructions">
-         <h3>General Info</h3>
-         <p>Current time: 4:37 PM</p>
-         <p>Address of origin (blue): Shadow Creek High School, 11850 Broadway St, Pearland, TX 77584</p>
-         <p>Address of destination (red): 13551 Westpark Dr, Houston, TX 77082</p>
-         <p>Distance of destination: 28.8 Miles</p>
-         <p>Estimated travel time to destination: 40 minutes</p>
-         <p>State of charge of battery: 15% Charge</p>
-         <p>Range of current battery: 45 Minutes</p>
-     </div>
+    <div id="instructions">
+        <h3>General Info</h3>
+    </div>    
 
     <!-- Log box div displaying user actions and providing a button to copy logs -->
     <div id="log-box">
@@ -180,6 +191,17 @@
         let startPoint = null;
         let endPoint = null;
         let poiMarkers = [];
+
+        const instructions = [
+            { title: "Current time", info: "4:37 PM" },
+            { title: "Address of origin (blue)", info: "Shadow Creek High School, 11850 Broadway St, Pearland, TX 77584" },
+            { title: "Address of destination (red)", info: "13551 Westpark Dr, Houston, TX 77082" },
+            { title: "Distance of destination", info: "28.8 Miles" },
+            { title: "Estimated travel time to destination", info: "40 minutes" },
+            { title: "State of charge of battery", info: "15% Charge" },
+            { title: "Range of current battery", info: "45 Minutes" }
+        ];
+
 
         // Array to store charging station data
         const chargingStations = [
@@ -440,6 +462,24 @@
                 `;
         }
 
+
+        // Function to create instruction buttons
+        function createInstructionButtons() {
+            const instructionsDiv = document.getElementById('instructions');
+            
+            instructions.forEach((instruction, index) => {
+                const button = document.createElement('button');
+                button.className = 'instruction-button';
+                button.textContent = instruction.title;
+                button.style.fontSize = '16px';
+                button.style.padding = '10px';
+                button.style.margin = '5px';
+                button.style.width = '100%';
+                button.onclick = () => showInstructionInfo(index);
+                instructionsDiv.appendChild(button);
+            });
+        }
+
         // Function to show more information about a charging station
         function showMoreInfo(stationName, infoType, infoContent) {
             logAction(`Button clicked: ${infoType} for ${stationName}`);
@@ -457,6 +497,37 @@
                 `;
             }
         }
+
+        // Function to show instruction information
+        function showInstructionInfo(index) {
+            const instruction = instructions[index];
+            logAction(`Button clicked: ${instruction.title}`);
+
+            const content = `<p style="font-size: 16px; padding: 5px;">${instruction.info}</p>`;
+
+            const popups = document.getElementsByClassName('mapboxgl-popup-content');
+            if (popups.length > 0) {
+                popups[0].innerHTML = `
+                    <div style="max-height: 500px; max-width: 400px; padding: 10px;">
+                        <h3 style="font-size: 20px; margin-top: 0; margin-bottom: 10px;">${instruction.title}</h3>
+                        ${content}
+                        <button class="popup-button" style="font-size: 18px; padding: 10px 20px;" onclick="closePopup()">Close</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Function to close the popup
+        function closePopup() {
+            const popups = document.getElementsByClassName('mapboxgl-popup-content');
+            if (popups.length > 0) {
+                popups[0].innerHTML = '';
+            }
+        }
+
+        // Call the function to create buttons when the page loads
+        createInstructionButtons();
+
 
         // Function to restore the original content of the popup
         function restoreOriginalContent(stationName) {
