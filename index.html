@@ -204,8 +204,8 @@
 
         const instructions = [
             { title: "Current time", info: "4:37 PM" },
-            { title: "Address of origin (blue)", info: "Shadow Creek High School, 11850 Broadway St, Pearland, TX 77584" },
-            { title: "Address of destination (red)", info: "13551 Westpark Dr, Houston, TX 77082" },
+            { title: "Address of origin", info: "Shadow Creek High School, 11850 Broadway St, Pearland, TX 77584" },
+            { title: "Address of destination", info: "13551 Westpark Dr, Houston, TX 77082" },
             { title: "Distance of destination", info: "28.8 Miles" },
             { title: "Estimated travel time to destination", info: "40 minutes" },
             { title: "State of charge of battery", info: "15% Charge" },
@@ -534,6 +534,7 @@
             }
         }
 
+        // Function to handle the back button click in the Map Guide popup
         function handleBackButtonClick(title) {
             logAction(`Back button clicked for ${title}`);
             restoreMapGuide();
@@ -721,7 +722,7 @@
                     'text-offset': [0.8, 0]
                 },
                 paint: {
-                    'text-color': 'white'
+                    'text-color': 'black'
                 }
             });
 
@@ -745,7 +746,7 @@
                     'text-offset': [0.8, 0]
                 },
                 paint: {
-                    'text-color': 'white'
+                    'text-color': 'black'
                 }
             });
         });
