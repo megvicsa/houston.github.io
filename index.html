@@ -347,10 +347,11 @@
         function getUserIdFromUrl() {
         const params = new URLSearchParams(window.location.search);
         return params.get('userID');
+        console.log('User ID ATTEMPED');
         }
 
         const userId = getUserIdFromUrl();
-        console.log('User ID:', userId);
+        console.log('User Id:', userId);
 
         function logData(actionType, chargingStation, button, coordinates, map) {
         const entry = {
