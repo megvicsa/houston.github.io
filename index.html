@@ -976,7 +976,7 @@
                 const clickCoords = [event.lngLat.lng, event.lngLat.lat];
                 logData(`Map Clicked`, null, null, clickCoords, mapNum);
 
-                const bufferRadius = 0.6; // Buffer radius in kilometers
+                const bufferRadius = 0.7; // Buffer radius in kilometers
 
                 if(!checkBufferZone(clickCoords, chargingStations[0].coordinates, bufferRadius) && !checkBufferZone(clickCoords, chargingStations[1].coordinates, bufferRadius)) {
                     removeRoutes();
