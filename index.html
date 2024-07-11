@@ -179,13 +179,13 @@
             container: 'map',
             style: 'mapbox://styles/mapbox/navigation-day-v1',
             center: [-95.53750552083278,29.639204449599802],
-            zoom: 1
+            zoom: 10
         });
 
         // Define geographical bounds for the map
         const bounds = [
-            [-95.887936, 29.502870],
-            [-95.206648, 29.770314]
+            [-95.913936, 29.482870],
+            [-95.181648, 29.790314]
         ];
         map.setMaxBounds(bounds);
 
@@ -204,8 +204,8 @@
             { title: "Current time", info: "4:37 PM" },
             { title: "Address of origin", info: "Shadow Creek High School, 11850 Broadway St, Pearland, TX 77584" },
             { title: "Address of destination", info: "13551 Westpark Dr, Houston, TX 77082" },
-            { title: "Distance of destination", info: "28.8 Miles" },
-            { title: "Estimated travel time to destination", info: "40 minutes" },
+            { title: "Distance of destination", info: "28.8" },
+            { title: "Estimated travel time to destination", info: "40" },
             { title: "State of charge of battery", info: "15% Charge" },
             { title: "Range of current battery", info: "45 Minutes" }
         ];
@@ -220,10 +220,10 @@
                 name: 'First Colony Mall - Lululemon',
 
                 location: '16535 Southwest Fwy STE 2004, Sugar Land, TX 77479, USA',
-                originDistance: '22.7 Miles',
-                originTime: '30 Minutes',
-                destDistance: '25.3 Miles',
-                destTime: '41 Minutes',
+                originDistance: '22.7',
+                originTime: '30',
+                destDistance: '25.3',
+                destTime: '41',
 
                 waitTime: 'No wait',
                 plugs: 'J1772 (2)',
@@ -247,10 +247,10 @@
                 name: 'Atrium Regency Apartments',
 
                 location: '5655 Glenmont Dr, Houston, TX 77081, USA',
-                originDistance: '23.3 Miles',
-                originTime: '35 Minutes',
-                destDistance: '10.1 Miles ',
-                destTime: '15 Minutes',
+                originDistance: '23.3',
+                originTime: '35',
+                destDistance: '10.1 ',
+                destTime: '15',
 
                 waitTime: 'No wait',
                 plugs: 'J1772 (4)',
@@ -556,10 +556,10 @@
                     <h3 style="font-size: 20px; margin-top: 0; margin-bottom: 10px;">${station.name}</h3>
                     <img src="${decodeURIComponent(encodedImageUrl)}" alt="${station.name}" style="width:100%;max-width:300px;">
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'location', '${station.location}')">Location</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'originDistance', '${station.originDistance}')">Distance from Start</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'originTime', '${station.originTime}')">Travel Time from Start</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'destDistance', '${station.destDistance}')">Distance to Destination</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'destTime', '${station.destTime}')">Travel Time to Destination</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'originDistance', '${station.originDistance} <br>Miles')">Distance from Start</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'originTime', '${station.originTime} <br>Minutes')">Travel Time from Start</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'destDistance', '${station.destDistance} <br>Miles')">Distance to Destination</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'destTime', '${station.destTime} <br>Minutes')">Travel Time to Destination</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'waitTime', '${station.waitTime}')">Wait Time</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'plugs', '${station.plugs}')">Plugs</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'chargeTime', '${station.chargeTime}')">Charge Time</button>
@@ -699,13 +699,13 @@
 
                 // Fetch origin to charging station details
                 const originToStation = await getRouteDetails(startPoint, stationPoint);
-                station.originDistance = `${originToStation.distance.toFixed(2)} Miles`;
-                station.originTime = `${originToStation.time} Minutes`;
+                station.originDistance = `${originToStation.distance.toFixed(2)}`;
+                station.originTime = `${originToStation.time}`;
 
                 // Fetch charging station to destination details
                 const stationToDest = await getRouteDetails(stationPoint, endPoint);
-                station.destDistance = `${stationToDest.distance.toFixed(2)} Miles`;
-                station.destTime = `${stationToDest.time} Minutes`;
+                station.destDistance = `${stationToDest.distance.toFixed(2)}`;
+                station.destTime = `${stationToDest.time}`;
 
                 console.log(`Updated station ${station.name} with distance ${station.originDistance} and ${station.destDistance}`);
             }
@@ -782,8 +782,8 @@
 
         // Function to update instructions with route details
         function updateInstructions(routeDetails) {
-            instructions[3].info = `${routeDetails.distance.toFixed(2)} Miles`;
-            instructions[4].info = `${routeDetails.time} Minutes`;
+            instructions[3].info = `${routeDetails.distance.toFixed(2)} <br>Miles`;
+            instructions[4].info = `${routeDetails.time} <br>Minutes`;
         }
 
         // Function to get the route to travel between any route type
