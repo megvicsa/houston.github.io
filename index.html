@@ -163,13 +163,13 @@
     <!-- Instructions div displaying general information about the trip -->
     <!--<div id="instructions">
         <h2>General Info</h2>
-    </div>--> 
-
-    <!-- Log box div displaying user actions and providing a button to copy logs -->
-    <div id="log-box">
+    </div>
+    <Log box div displaying user actions and providing a button to copy logs -->
+    <!--<div id="log-box">
         <h3>Click Logs</h3>
         <button id="copy-button">Copy Logs</button>
-    </div>
+    </div>-->
+
     <script>
         // Set the Mapbox access token
         mapboxgl.accessToken = 'pk.eyJ1IjoiaGdhem1laCIsImEiOiJjbGx5NzZpc3QwYWZtM2xwcjE3a2J5bjQxIn0.cpUto7a5fO9EgSY2LCjOSQ';
@@ -178,14 +178,14 @@
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/navigation-day-v1',
-            center: [-95.53750552083278,29.639204449599802],
+            center: [-95.46272103028463, 29.651556406710483],
             zoom: 10
         });
 
         // Define geographical bounds for the map
         const bounds = [
-            [-95.913936, 29.482870],
-            [-95.181648, 29.790314]
+            [-96.003936, 29.482870],
+            [-95.191648, 29.790314]
         ];
         map.setMaxBounds(bounds);
 
