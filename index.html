@@ -229,8 +229,7 @@
                 destTime: '41',
 
                 waitTime: '0',
-                plugs: 'J1772',
-                plugNumb: '2',
+                plugs: 'J1772 (2 Plugs)',
                 chargeTime: '410',
                 socketAvalability: '1 available, 1 in use',
 
@@ -566,7 +565,7 @@
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'destDistance', '${station.destDistance} miles <br><br> The distance from this charging station to the destination is ${station.destDistance} miles ')">Distance to Destination</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'destTime', '${station.destTime} minutes <br><br> The estimated travel time from this charging station to the destination is ${station.destTime} minutes')">Travel Time to Destination</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'waitTime', '${station.waitTime} minute wait! <br><br> The estimated time you have to wait before you can access the charging socket is ${station.waitTime} minutes!')">Wait Time at Station</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'plugs', '${station.plugs} <br><br> There are ${station.plugNumb} plugs of ${station.plugs} available')">Plugs Available at Station</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'plugs', '${station.plugs} <br><br> There are ${station.plugs} plugs & number of plugs available')">Plugs Available at Station</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'chargeTime', '${station.chargeTime} minutes <br><br> The estimated charging of ${station.plugs} is ${station.chargeTime} minutes to be fully charged')">Charge Time</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'socketAvalability', 'There are ${station.socketAvalability} sockets')">Socket Availability Per Socket</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'energySource', '${station.energySource}')">Energy Source at Station</button>
