@@ -210,7 +210,8 @@
             { title: "Range of Current Battery", info: "45 Minutes" },
             { title: "Type of Chargin Socket", info: "J1772" },
             { title: "Estimated Drive-time with Current Charge", info: "~~" },
-            { title: "kWh Needed to Fully Charge Your Car", info: "~~" }
+            { title: "kWh Needed to Fully Charge Your Car", info: "~~" },
+
         ];
 
 
@@ -228,21 +229,22 @@
                 destDistance: '25.3',
                 destTime: '41',
 
-                waitTime: 'No wait',
-                plugs: 'J1772 (2) 8.32kWh',
+                waitTime: '0',
+                plugs: 'J1772',
+                plugNumb: '2',
                 chargeTime: '410 Minutes to Full Charge',
                 socketAvalability: '1 available, 1 in use',
 
-                energySource: '60% Grid, 40% Solar',
+                energySource: 'Energy Breakdown: 60% Grid, 40% Solar',
 
                 fees: 'Free charging',
                 parking: 'Free parking',
 
-                coffee: 'Yes (0.1 Miles)',
-                grocery: 'Yes (1 Mile)',
-                sportsClothes: 'Yes (0.1 Miles)',
+                coffee: 'Yes <br><br> There is a coffee shop in walking distance (0.1 Miles)',
+                grocery: 'Yes <br><br> There is a grocery store in walking distance (1 Mile)',
+                sportsClothes: 'Yes <br><br> There is a sports or clothing store in walking distance (0.1 Miles)',
                 
-                rating: '⭐⭐⭐ (34 Reviews)' 
+                rating: '⭐⭐⭐ <br><br>(34 Reviews)' 
             },
             {
                 coordinates: [-95.466648, 29.710314],
@@ -252,22 +254,23 @@
                 location: '5655 Glenmont Dr, Houston, TX 77081, USA',
                 originDistance: '23.3',
                 originTime: '35',
-                destDistance: '10.1 ',
+                destDistance: '10.1',
                 destTime: '15',
 
-                waitTime: 'No wait',
-                plugs: 'J1772 (4) 6.6 - 12 kWh',
+                waitTime: '0',
+                plugs: 'J1772',
+                plugNumb: '4',
                 chargeTime: '400 Minutes to Full Charge',
                 socketAvalability: '4 available',
 
-                energySource: '100% Grid',
+                energySource: 'Energy Breakdown: 100% Grid',
 
                 fees: '$0.39/kWh for Blink Members, $0.49/kWh for Blink Guests',
                 parking: 'Free parking',
 
-                coffee: 'Yes (1 Mile)',
-                grocery: 'Yes  (0.2 Miles)',
-                sportsClothes: 'Yes (1.7 Miles)',
+                coffee: 'Yes <br><br> There is a coffee shop in walking distance (1 Mile)',
+                grocery: 'Yes  <br><br> There is a grocery store in walking distance (0.2 Miles)',
+                sportsClothes: 'Yes <br><br> There is a sports or clothing store in walking distance (1.7 Miles)',
                 
                 rating: '(0 Reviews)'
             }
@@ -559,17 +562,17 @@
                     <h3 style="font-size: 20px; margin-top: 0; margin-bottom: 10px;">${station.name}</h3>
                     <img src="${decodeURIComponent(encodedImageUrl)}" alt="${station.name}" style="width:100%;max-width:300px;">
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'location', '${station.location}')">Location</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'originDistance', '${station.originDistance} <br>Miles')">Distance from Start</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'originTime', '${station.originTime} <br>Minutes')">Travel Time from Start</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'destDistance', '${station.destDistance} <br>Miles')">Distance to Destination</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'destTime', '${station.destTime} <br>Minutes')">Travel Time to Destination</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'waitTime', '${station.waitTime}')">Wait Time</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'plugs', '${station.plugs}')">Plugs</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'chargeTime', '${station.chargeTime}')">Charge Time</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'socketAvalability', '${station.socketAvalability}')">Socket Availability</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'energySource', '${station.energySource}')">Energy Source</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'fees', '${station.fees}')">Fees</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'parking', '${station.parking}')">Parking</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'originDistance', '${station.originDistance} <br><br> The charging station is ${station.originDistance} from your location')">Distance from My Location</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'originTime', '${station.originTime} <br><br> The estimated travel time from your location to this charging station is ${station.originTime}')">Travel Time from My Location</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'destDistance', '${station.destDistance} <br><br> The distance from this charging station to the destination is ${station.destDistance}')">Distance to Destination</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'destTime', '${station.destTime} <br><br> The estimated travel time from this charging station to the destination is ${station.destTime}')">Travel Time to Destination</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'waitTime', '${station.waitTime} Wait <br><br> The estimated time you have to wait before you can access the charging socket is ${station.waitTime} minutes!')">Wait Time at Station</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'plugs', '${station.plugs} <br><br> There are ${station.plugNumb} plugs of ${station.plugs} available ')">Plugs Available at Station</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'chargeTime', '${station.chargeTime} <br><br> The estimated charging of ${station.plugs} is ${station.chargeTime}')">Charge Time</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'socketAvalability', 'There are ${station.socketAvalability} sockets')">Socket Availability Per Socket</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'energySource', '${station.energySource}')">Energy Source at Station</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'fees', '${station.fees} <br><br> The price per KiloWatt hour (kWh) is ${station.fees}')">Cost to Charge</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'parking', '${station.parking} <br><br> The price of parking your car at the charging station is ${station.parking}')">Cost to Park at Station</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'coffee', '${station.coffee}')">Coffee Shop</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'grocery', '${station.grocery}')">Grocery Store</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'sportsClothes', '${station.sportsClothes}')">Sport/Clothing Store</button>
@@ -979,7 +982,7 @@
                 const clickCoords = [event.lngLat.lng, event.lngLat.lat];
                 logData(`Map Clicked`, null, null, clickCoords, mapNum);
 
-                const bufferRadius = 0.7; // Buffer radius in kilometers
+                const bufferRadius = 0.8; // Buffer radius in kilometers
 
                 if(!checkBufferZone(clickCoords, chargingStations[0].coordinates, bufferRadius) && !checkBufferZone(clickCoords, chargingStations[1].coordinates, bufferRadius)) {
                     removeRoutes();
