@@ -42,9 +42,9 @@
         #instructions {
             position: absolute;
             left: 30px;
-            top: calc(40% + 20px);
+            top: calc(40% + 10px);
             width: 20%;
-            bottom: 5%;
+            bottom: 10%;
             padding: 10px;
             background-color: #fff;
             overflow-y: scroll;
@@ -145,13 +145,13 @@
 
     <!-- Map container -->
     <div id='map'></div>
-    Manual div providing instructions to the user -->
+    <!-- Manual div providing instructions to the user -->
     <div id="manual">
-<h3>Map Guide</h3>
+        <h3>Map Guide</h3>
         <p>This map displays pre-set start and end points for your trip.</p>
         <p>Look for the ⚡ symbol to find two available charging stations along your route.</p>
         <p>Click on any station to view more details about it.</p>
-        <p>For navigation, simply click on any two points on the map to get the trip duration and route information.</p> -->
+        <p>For navigation, simply click on any two points on the map to get the trip duration and route information.</p>
     </div>
 
     <!-- SET ALL INSTRUCTION INFO BELOW -->
@@ -161,15 +161,15 @@
 
 
     <!-- Instructions div displaying general information about the trip -->
-    <div id="instructions">
+    <!--<div id="instructions">
         <h2>General Info</h2>
-    </div>
-    <Log box div displaying user actions and providing a button to copy logs -->
+    </div>--> 
+
+    <!-- Log box div displaying user actions and providing a button to copy logs -->
     <div id="log-box">
         <h3>Click Logs</h3>
         <button id="copy-button">Copy Logs</button>
-    </div>-->
-
+    </div>
     <script>
         // Set the Mapbox access token
         mapboxgl.accessToken = 'pk.eyJ1IjoiaGdhem1laCIsImEiOiJjbGx5NzZpc3QwYWZtM2xwcjE3a2J5bjQxIn0.cpUto7a5fO9EgSY2LCjOSQ';
