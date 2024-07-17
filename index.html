@@ -200,14 +200,14 @@
         const map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/navigation-day-v1',
-            center: [-95.46272103028463, 29.651556406710483],
+            center: [-95.51987306452574,29.657731734776377],
             zoom: 10
         });
 
         // Define geographical bounds for the map
         const bounds = [
-            [-96.000936, 29.382870],
-            [-95.201648, 29.890314]
+            [-95.900936, 29.382870],
+            [-95.101648, 29.890314]
         ];
         map.setMaxBounds(bounds);
 
@@ -924,6 +924,7 @@
             map.on('click', (event) => {
                 const clickCoords = [event.lngLat.lng, event.lngLat.lat];
                 logData(`Map Clicked`, null, null, clickCoords, mapNum);
+                console.log(`Map clicked at: ${clickCoords}`);
 
                 const bufferRadius = 0.8; // Buffer radius in kilometers
 
