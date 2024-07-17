@@ -37,12 +37,13 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             font-family: sans-serif;
             border: 1px solid #ccc;
+            display: none; /* Initially hidden */
         }
 
         #instructions {
             position: absolute;
             left: 30px;
-            top: calc(40% + 20px);
+            top: calc(35% + 20px);
             width: 20%;
             bottom: 5%;
             padding: 10px;
@@ -70,21 +71,34 @@
             border: 1px solid #ccc;
         }
 
+        .info-box {
+            position: absolute;
+            width: 200px;
+            max-height: 35%;
+            padding: 20px;
+            background-color: #fff;
+            overflow-y: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-family: sans-serif;
+            border: 1px solid #ccc;
+            display: none; /* Initially hidden */
+        }
+
+        #top-right-info {
+            top: 20px;
+            right: 20px;
+        }
+
+        #bottom-left-info {
+            bottom: 20px;
+            right: 20px;
+        }
+
+
         .popup-content {
             max-height: 330px;
             overflow-y: auto;
-            position: absolute;
-            top: 70px;
-            right: 100px;
-            width: 250px;
-            height: 300px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            font-family: sans-serif;
-            border: 1px solid #ccc;
-            z-index: 1000;
         }
 
 
@@ -141,7 +155,7 @@
             margin: 5px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 15px;
             transition: background-color 0.3s;
             font-family: sans-serif;
         }
@@ -160,27 +174,20 @@
     <!-- Manual div providing instructions to the user -->
     <div id="manual">
         <h3>Info</h3>
-<!--         <p>This map displays pre-set start and end points for your trip.</p>
+        <!--<p>This map displays pre-set start and end points for your trip.</p>
         <p>Look for the ⚡ symbol to find two available charging stations along your route.</p>
         <p>Click on any station to view more details about it.</p>
         <p>For navigation, simply click on any two points on the map to get the trip duration and route information.</p> -->
     </div>
 
-    <!-- SET ALL INSTRUCTION INFO BELOW -->
-     <div id="instructions">
+    <!-- Instructions div displaying general information about the trip -->
+    <div id="instructions">
         <h3>General Info</h3>
     </div>
 
-
-    <!-- Instructions div displaying general information about the trip -->
-    <!--<div id="instructions">
-        <h2>General Info</h2>
-    </div>
-    <Log box div displaying user actions and providing a button to copy logs -->
-    <!--<div id="log-box">
-        <h3>Click Logs</h3>
-        <button id="copy-button">Copy Logs</button>
-    </div>-->
+    <!-- Log box to display charging station info -->
+    <div id="top-right-info" class="info-box"></div>
+    <div id="bottom-left-info" class="info-box"></div>
 
     <script>
         // Set the Mapbox access token
@@ -222,7 +229,7 @@
             { title: "Range of Current Battery", info: "45 Minutes" },
             { title: "Estimated Drive-distance with Current Charge", info: "22.5 Miles" },
             { title: "Type of Chargin Socket", info: "J1772" },
-            { title: "kWh Needed to Fully Charge Your Car", info: "51 kWh" }
+            { title: "kWh Needed to Fully Charge Your Car", info: "51 kW" }
         ];
 
 
@@ -252,11 +259,6 @@
                 socketAvalability: [
                         { type: 'J1772', value: '1 available' }
                     ],
-
-                //waitTime: [('J1772', '0')],
-                //plugNumb: [('J1772', '2')],
-                //chargeTime: [('J1772','410')],
-                //socketAvalability: [('J1772', '1 available')],
 
                 energySource: 'Energy Breakdown: 60% Grid, 40% Solar',
 
@@ -299,11 +301,6 @@
                         { type: 'J1772', value: '4 available' },
                         { type: 'test-NEMA', value: '2 available' }
                     ],        
-
-                //waitTime: [('J1772','0'), ('NEMA','0')],
-                //plugNumb: [('J1772', '4'), ('NEMA', '2')],
-                //chargeTime: [('J1772', '400'), ('NEMA','400')],
-                //socketAvalability: [('J1772', '4 available'), ('NEMA', '2 available')],
 
                 energySource: 'Energy Breakdown: 100% Grid',
 
@@ -437,32 +434,6 @@
         */
         }
 
-        /*
-        // Function to log user actions in the log box
-        function logAction(action) {
-            const logBox = document.getElementById('log-box');
-            const timestamp = new Date().toLocaleTimeString();
-            logBox.innerHTML += `<p>[${timestamp}] ${action}</p>`;
-            logBox.scrollTop = logBox.scrollHeight;
-        }
-
-        // Function to copy logs to the clipboard
-        function copyLogs() {
-            const logBox = document.getElementById('log-box');
-            const logs = Array.from(logBox.getElementsByTagName('p')).map(p => p.textContent).join('\n');
-            const textarea = document.createElement('textarea');
-            textarea.value = logs;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            alert('Logs copied to clipboard');
-        }
-           
-
-        // Add event listener to the copy button
-        document.getElementById('copy-button').addEventListener('click', copyLogs);
-         */
 
         // Function to calculate the distance between two points using the Haversine formula
         function haversineDistance(coords1, coords2) {
@@ -482,62 +453,6 @@
             return distance <= bufferRadius;
         }
 
-        // Function to fetch and display the route between start and end points
-        /*
-        async function getRoute() {
-            if (!startPoint || !endPoint) return;
-
-            const query = await fetch(
-                `https://api.mapbox.com/directions/v5/mapbox/driving/${startPoint[0]},${startPoint[1]};${endPoint[0]},${endPoint[1]}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
-                { method: 'GET' }
-            );
-            const json = await query.json();
-            const data = json.routes[0];
-            const route = data.geometry.coordinates;
-            const geojson = {
-                type: 'Feature',
-                properties: {},
-                geometry: {
-                    type: 'LineString',
-                    coordinates: route
-                }
-            };
-
-            if (map.getSource('route')) {
-                map.getSource('route').setData(geojson);
-            } else {
-                map.addLayer({
-                    id: 'route',
-                    type: 'line',
-                    source: {
-                        type: 'geojson',
-                        data: geojson
-                    },
-                    layout: {
-                        'line-join': 'round',
-                        'line-cap': 'round'
-                    },
-                    paint: {
-                        'line-color': '#3887be',
-                        'line-width': 5,
-                        'line-opacity': 0.75
-                    }
-                });
-            }
-
-            const instructions = document.getElementById('instructions');
-            const steps = data.legs[0].steps;
-
-            let tripInstructions = '';
-            for (const step of steps) {
-                tripInstructions += `<li>${step.maneuver.instruction}</li>`;
-            }
-            instructions.innerHTML = `<p><strong>Trip duration: ${Math.floor(
-                data.duration / 60
-            )} min 🚗</strong></p><ol>${tripInstructions}</ol>`;
-            logAction(`Route calculated: ${data.legs[0].summary}`);
-        }
-        */
 
         // Function to add an emoji marker at a specific point on the map
         function addEmojiMarker(point) {
@@ -582,28 +497,31 @@
             //logAction(`Nearby ${poi_type}s added for ${stationName}`);
         }
 
+        let flag = 1;
+
         // Function to add charging stations to the map
         function addChargingStations() {
             chargingStations.forEach(station => {
                 const el = document.createElement('div');
                 el.className = 'marker';
-                el.innerHTML = '⚡';
+                if (flag){
+                    el.innerHTML = '⚡';
+                    flag = 0;
+                } else {
+                    el.innerHTML = '🔌';
+                    flag = 1;
+                }
                 el.style.fontSize = '32px';
-
-                const popupContent = generatePopupContent(station);
 
                 new mapboxgl.Marker({ element: el })
                     .setLngLat(station.coordinates)
-                    .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent))
-                    .addTo(map)
-                    .on('click', () => {
-                        logData(`Station Opened`, station.name, null, station.coordinates, mapNum);
-                    });
+                    .addTo(map);
             });
         }
+    
 
         // Function to generate popup content for charging stations
-        function generatePopupContent(station) {
+        function generateBoxContent(station, boxId) {
             const encodedImageUrl = encodeURIComponent(station.imageUrl);
 
             let waitTimeDetails = station.waitTime.map(item => `The estimated wait time of socket ${item.type} is... ${item.value} minutes`).join('<br><br>');
@@ -618,57 +536,71 @@
             console.log("Socket Availability Details: ", socketAvailabilityDetails);
 
             return `
-                <div class="popup-content">
                     <h3 style="font-size: 20px; margin-top: 0; margin-bottom: 10px;">${station.name}</h3>
                     <img src="${decodeURIComponent(encodedImageUrl)}" alt="${station.name}" style="width:100%;max-width:300px;">
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'location', '${station.location}')">Location</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'originDistance', '${station.originDistance} miles, <br><br>The distance from your location to ${station.name} is... ${station.originDistance} miles')">Distance from My Location</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'originTime', '${station.originTime} minutes, <br><br>The estimated travel time from your location to ${station.name} is... ${station.originTime} minutes')">Travel Time from My Location</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'destDistance', '${station.destDistance} miles, <br><br>The distance from ${station.name} to the destination is... ${station.destDistance} miles')">Distance to Destination</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'destTime', '${station.destTime} minutes, <br><br>The estimated travel time from  ${station.name} to the destination is... ${station.destTime} minutes')">Travel Time to Destination</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'originDistance', '${station.originDistance} miles, <br><br>The distance from your location to ${station.name} is... ${station.originDistance} miles', '${boxId}')">Distance from My Location</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'originTime', '${station.originTime} minutes, <br><br>The estimated travel time from your location to ${station.name} is... ${station.originTime} minutes', '${boxId}')">Travel Time from My Location</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'destDistance', '${station.destDistance} miles, <br><br>The distance from ${station.name} to the destination is... ${station.destDistance} miles', '${boxId}')">Distance to Destination</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'destTime', '${station.destTime} minutes, <br><br>The estimated travel time from  ${station.name} to the destination is... ${station.destTime} minutes', '${boxId}')">Travel Time to Destination</button>
 
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'waitTime', '${waitTimeDetails}')">Wait Time at Station</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'plugs', '${plugDetails}')">Plugs Available at Station</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'chargeTime', '${chargeTimeDetails}')">Charge Time</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'socketAvalability', '${socketAvailabilityDetails}')">Socket Availability</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'waitTime', '${waitTimeDetails}', '${boxId}')">Wait Time at Station</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'plugs', '${plugDetails}', '${boxId}')">Plugs Available at Station</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'chargeTime', '${chargeTimeDetails}, ${boxId}', '${boxId}')">Charge Time</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'socketAvalability', '${socketAvailabilityDetails}', '${boxId}')">Socket Availability</button>
 
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'energySource', '${station.energySource}')">Energy Source at Station</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'fees', '${station.chargingFee} <br><br> The price ${station.chargingFeeRate} is ${station.chargingFee}')">Cost to Charge</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'parking', '${station.parkingFee} parking <br><br> The price of parking your car at the charging station ${station.parkingFeeRate} is... ${station.parkingFee}')">Cost to Park at Station</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'coffee', '${station.coffee}')">Coffee Shop</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'grocery', '${station.grocery}')">Grocery Store</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'sportsClothes', '${station.sportsClothes}')">Sport/Clothing Store</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'rating', '${station.rating}')">Rating</button>
-                </div>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'energySource', '${station.energySource}', '${boxId}')">Energy Source at Station</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'fees', '${station.chargingFee} <br><br> The price ${station.chargingFeeRate} is ${station.chargingFee}', '${boxId}')">Cost to Charge</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'parking', '${station.parkingFee} parking <br><br> The price of parking your car at the charging station ${station.parkingFeeRate} is... ${station.parkingFee}', '${boxId}')">Cost to Park at Station</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'coffee', '${station.coffee}', '${boxId}')">Coffee Shop</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'grocery', '${station.grocery}', '${boxId}')">Grocery Store</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'sportsClothes', '${station.sportsClothes}', '${boxId}')">Sport/Clothing Store</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'rating', '${station.rating}', '${boxId}')">Rating</button>
                 `;
         }
 
+        // Function to clear the info boxes
+        function clearInfoBoxes() {
+            const infoBoxes = document.querySelectorAll('.info-box');
+            infoBoxes.forEach(box => {
+                box.innerHTML = '';
+                box.style.display = 'none';
+            });
+            console.log('Cleared info boxes');
+        }
+
+
+        // Function to update the info boxes with charging station data
+        function updateInfoBox(station, boxId) {
+            const infoBox = document.getElementById(boxId);
+            infoBox.innerHTML = generateBoxContent(station, boxId);
+            infoBox.style.display = 'block';
+            console.log(`Updated info box with data for ${station.name}`);
+        }
+        
+
         // Function to show more information about a charging station
-        function showMoreInfo(stationName, infoType, infoContent) {
-            logData(`Button Clicked`, `${stationName}`, `${infoType}`,  null, mapNum);
+        function showMoreInfo(stationName, infoType, infoContent, boxId) {
+            logData(`Button Clicked`, `${stationName}`, `${infoType}`, null, mapNum);
 
             const content = `<p style="font-size: 16px; padding: 5px;">${infoContent}</p>`;
 
-            const popups = document.getElementsByClassName('mapboxgl-popup-content');
-            if (popups.length > 0) {
-                popups[0].innerHTML = `
-                    <div style="max-height: 500px; max-width: 400px; padding: 10px;">
-                        <h3 style="font-size: 20px; margin-top: 0; margin-bottom: 10px;">${stationName}</h3>
-                        ${content}
-                        <button class="popup-button" style="font-size: 18px; padding: 10px 20px;" onclick="restoreOriginalContent('${stationName}', '${infoType}')">Back</button>
-                    </div>
-                `;
-            }
+            const infoBox = document.getElementById(boxId);
+            infoBox.innerHTML = `
+                <div style="max-height: 500px; max-width: 400px; padding: 10px;">
+                    <h3 style="font-size: 20px; margin-top: 0; margin-bottom: 10px;">${stationName}</h3>
+                    ${content}
+                    <button class="popup-button" style="font-size: 18px; padding: 10px 20px;" onclick="restoreOriginalContent('${stationName}', '${infoType}', '${boxId}')">Back</button>
+                </div>
+            `;
         }
 
-        // Function to restore the original content of the popup
-        function restoreOriginalContent(stationName, infoType) {
+        // Function to restore the original content of the info box
+        function restoreOriginalContent(stationName, infoType, boxId) {
             const station = chargingStations.find(station => station.name === stationName);
-            const popups = document.getElementsByClassName('mapboxgl-popup-content');
-            if (popups.length > 0) {
-                popups[0].innerHTML = generatePopupContent(station);
-            }
-            logData(`Back Button Clicked`, `${stationName}`, `${infoType}` , null, mapNum);
+            const infoBox = document.getElementById(boxId);
+            infoBox.innerHTML = generateBoxContent(station, boxId);
+            logData(`Back Button Clicked`, `${stationName}`, `${infoType}`, null, mapNum);
         }
 
         // Function to create instruction buttons
@@ -696,6 +628,7 @@
             const content = `<p style="font-size: 16px; padding: 5px;">${instruction.info}</p>`;
 
             const manualDiv = document.getElementById('manual');
+            manualDiv.style.display = 'block';
             if (manualDiv) {
                 manualDiv.innerHTML = `
                     <h3 style="font-size: 20px; margin-top: 0; margin-bottom: 10px;">${instruction.title}</h3>
@@ -715,15 +648,9 @@
         function restoreMapGuide() {
             const manualDiv = document.getElementById('manual');
             if (manualDiv) {
-                manualDiv.innerHTML = `
-                    <h3>Map Guide</h3>
-                    <p>This map displays pre-set start and end points for your trip.</p>
-                    <p>Look for the ⚡ symbol to find two available charging stations along your route.</p>
-                    <p>Click on any station to view more details about it.</p>
-                    <p>For navigation, simply click on any two points on the map to get the trip duration and route information.</p>
-                `;
+                manualDiv.innerHTML = ``;
+                manualDiv.style.display = 'none';
             }
-
         }
 
         // Call the function to create buttons when the page loads
@@ -780,6 +707,7 @@
 
         }
 
+
         // Function to update route instructions based on the start and end points
         async function updateAndDisplayRouteInstructions() {
             const startPoint = {
@@ -794,56 +722,6 @@
 
             const routeDetails = await getRouteDetails(startPoint, endPoint);
 
-           /*
-            const query = await fetch(
-                `https://api.mapbox.com/directions/v5/mapbox/driving/${startPoint.lng},${startPoint.lat};${endPoint.lng},${endPoint.lat}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
-                { method: 'GET' }
-            );
-            const json = await query.json();
-            const data = json.routes[0];
-            const route = data.geometry.coordinates;
-            const geojson = {
-                type: 'Feature',
-                properties: {},
-                geometry: {
-                    type: 'LineString',
-                    coordinates: route
-                }
-            };
-            if (map.getSource('route')) {
-                map.getSource('route').setData(geojson);
-            } else {
-                map.addLayer({
-                    id: 'route',
-                    type: 'line',
-                    source: {
-                        type: 'geojson',
-                        data: geojson
-                    },
-                    layout: {
-                        'line-join': 'round',
-                        'line-cap': 'round'
-                    },
-                    paint: {
-                        'line-color': '#3887be',
-                        'line-width': 5,
-                        'line-opacity': 0.75
-                    }
-                });
-            
-            }
-            // Assuming you have elements with IDs or you can set them in your HTML
-            document.querySelector('#instructions').innerHTML = `
-                <h3>General Info</h3>
-                <p>Current time: </p>
-                <p>Address of origin: </p>
-                <p>Address of destination: </p>
-                <p>Distance of destination: ${routeDetails.distance.toFixed(2)} Miles</p>
-                <p>Estimated travel time to destination: ${routeDetails.time} Minutes</p>
-                <p>State of charge of battery: </p>
-                <p>Range of current battery: </p>
-            `;
-            */
 
             updateInstructions(routeDetails);
         }
@@ -877,8 +755,8 @@
                         lng: chargingStations[0].coordinates[0],
                         lat: chargingStations[0].coordinates[1]
                     };
-                    await fetchAndDisplayRoute(startPoint, midPoint); // Fetch route to charging station
-                    await fetchAndDisplayRoute(midPoint, endPoint);  // Fetch route from charging station to end
+                    await fetchAndDisplayRoute(startPoint, midPoint, '#FFDF00'); // Fetch route to charging station
+                    await fetchAndDisplayRoute(midPoint, endPoint, '#FFDF00');  // Fetch route from charging station to end
                     break;
                 case 2:
                     // Use the second charging station for case 3
@@ -886,19 +764,19 @@
                         lng: chargingStations[1].coordinates[0],
                         lat: chargingStations[1].coordinates[1]
                     };
-                    await fetchAndDisplayRoute(startPoint, midPoint); // Fetch route to charging station
-                    await fetchAndDisplayRoute(midPoint, endPoint);  // Fetch route from charging station to end
+                    await fetchAndDisplayRoute(startPoint, midPoint, '#3b3b3b'); // Fetch route to charging station
+                    await fetchAndDisplayRoute(midPoint, endPoint, '#3b3b3b');  // Fetch route from charging station to end
                     break;
                 default:
                     // Direct route from startPoint to endPoint
-                    await fetchAndDisplayRoute(startPoint, endPoint);
+                    await fetchAndDisplayRoute(startPoint, endPoint, '#ca5cdd');
                     return;
             }
         }
 
     
         // Function to fetch and display a route between two points
-        async function fetchAndDisplayRoute(start, end, routeType) {
+        async function fetchAndDisplayRoute(start, end, color) {
             console.log(`Fetching route from ${start.lng},${start.lat} to ${end.lng},${end.lat}`);
 
             // Fetch the route data from the Mapbox Directions API
@@ -935,7 +813,7 @@
                         'line-cap': 'round'
                     },
                     paint: {
-                        'line-color': '#3887be',
+                        'line-color': color,
                         'line-width': 5,
                         'line-opacity': 0.75
                     }
@@ -1049,6 +927,7 @@
                 if(!checkBufferZone(clickCoords, chargingStations[0].coordinates, bufferRadius) && !checkBufferZone(clickCoords, chargingStations[1].coordinates, bufferRadius)) {
                     removeRoutes();
                     getRoute(0);
+                    clearInfoBoxes();
                     console.log('Current route type set to 0');
                 }
 
@@ -1056,42 +935,20 @@
                     if (checkBufferZone(clickCoords, station.coordinates, bufferRadius)) {
                         removeRoutes();
                         getRoute(chargingStations.indexOf(station) + 1);
+
+                        if(chargingStations.indexOf(station) + 1 == 1){
+                            updateInfoBox(station, 'top-right-info');
+                        } else {
+                            updateInfoBox(station, 'bottom-left-info');
+                        }
+
+                        logData(`Station Opened`, station.name, null, station.coordinates, mapNum);
                         console.log(`Clicked within buffer zone of ${station.name}`);
                     }
                 });
 
-                // poiMarkers.forEach(poi => {
-                //     if (checkBufferZone(clickCoords, poi.coordinates, bufferRadius)) {
-                //         logAction(poi.logMessage);
-                //     }
-                // });
-
-                // if (!startPoint) {
-                //     startPoint = clickCoords;
-                //     startMarker.setLngLat(clickCoords);
-                //     logAction(`Start point set at: ${clickCoords}`);
-                // } else {
-                //     endPoint = clickCoords;
-                //     endMarker.setLngLat(clickCoords);
-                //     logAction(`End point set at: ${clickCoords}`);
-                //     getRoute();
-
-                //     startPoint = null;
-                //     endPoint = null;
-                // }
             });
 
-            /*
-            // Event listener for start marker clicks
-            startMarker.getElement().addEventListener('click', () => {
-                logAction(`Start marker clicked at: ${startMarker.getLngLat()}`);
-            });
-
-            // Event listener for end marker clicks
-            endMarker.getElement().addEventListener('click', () => {
-                logAction(`End marker clicked at: ${endMarker.getLngLat()}`);
-            });
-            */
 
             // Add charging stations to the map
             addChargingStations();
