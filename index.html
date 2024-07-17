@@ -73,6 +73,18 @@
         .popup-content {
             max-height: 330px;
             overflow-y: auto;
+            position: absolute;
+            top: 70px;
+            right: 100px;
+            width: 250px;
+            height: 300px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            font-family: sans-serif;
+            border: 1px solid #ccc;
+            z-index: 1000;
         }
 
 
@@ -147,7 +159,7 @@
     <div id='map'></div>
     <!-- Manual div providing instructions to the user -->
     <div id="manual">
-        <h3>Map Guide</h3>
+        <h3>Info</h3>
 <!--         <p>This map displays pre-set start and end points for your trip.</p>
         <p>Look for the ⚡ symbol to find two available charging stations along your route.</p>
         <p>Click on any station to view more details about it.</p>
