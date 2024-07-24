@@ -74,7 +74,7 @@
         .info-box {
             position: absolute;
             width: 200px;
-            max-height: 35%;
+            max-height: 40%;
             padding: 20px;
             background-color: #fff;
             overflow-y: auto;
@@ -95,31 +95,13 @@
         #bottom-left-info {
             bottom: 20px;
             right: 20px;
-            background-color: #616161;
+            background-color: #8d8d8d;
         }
 
 
         .popup-content {
             max-height: 330px;
             overflow-y: auto;
-        }
-
-
-        .popup-button {
-            background-color: #bbb8b8;
-            color: black;
-            border: none;
-            padding: 8px 16px;
-            margin: 5px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s;
-            font-family: sans-serif;
-        }
-
-        .popup-button:hover {
-            background-color: #0056b3;
         }
 
         .emoji-marker {
@@ -151,7 +133,7 @@
         }
 
         .popup-button, .instruction-button {
-            background-color: #bbb8b8;
+            background-color: #cecccc;
             color: black;
             border: none;
             padding: 8px 16px;
@@ -224,7 +206,7 @@
         // Function to add a marker at a specific point on the map
         const instructions = [
             { title: "Current Time", info: "7:37 AM" },
-            { title: "Address of Origin", info: "Shadow Creek High School, 11850 Broadway St, Pearland, TX 77584" },
+            { title: "Address of Origin", info: "351 Post Rd, Rosharon, TX 77583" },
             { title: "Address of Destination", info: "13551 Westpark Dr, Houston, TX 77082" },
             { title: "Distance of Destination", info: "28.8" },
             { title: "Estimated Time to Destination", info: "40" },
@@ -532,12 +514,6 @@
             let chargeTimeDetails = station.chargeTime.map(item => `The estimated charging time of socket ${item.type} is... ${item.value} minutes to full`).join('<br><br>');
             let socketAvailabilityDetails = station.socketAvalability.map(item => `There are ${item.value} availible number of socket type ${item.type}`).join('<br><br>');
 
-            // Debugging output
-            console.log("Wait Time Details: ", waitTimeDetails);
-            console.log("Plug Details: ", plugDetails);
-            console.log("Charge Time Details: ", chargeTimeDetails);
-            console.log("Socket Availability Details: ", socketAvailabilityDetails);
-
             return `
                     <h3 style="font-size: 20px; margin-top: 0; margin-bottom: 10px;">${station.name}</h3>
                     <img src="${decodeURIComponent(encodedImageUrl)}" alt="${station.name}" style="width:100%;max-width:300px;">
@@ -563,6 +539,7 @@
         }
 
         // Function to clear the info boxes
+        /*
         function clearInfoBoxes() {
             const infoBoxes = document.querySelectorAll('.info-box');
             infoBoxes.forEach(box => {
@@ -571,6 +548,19 @@
             });
             console.log('Cleared info boxes');
         }
+            */
+
+        function clearInfoBoxes(boxId = null) {
+            const infoBoxes = document.querySelectorAll('.info-box');
+            infoBoxes.forEach(box => {
+                if (boxId === null || box.id === boxId) {
+                    box.innerHTML = '';
+                    box.style.display = 'none';
+                }
+            });
+            console.log('Cleared info boxes', boxId ? `for ${boxId}` : 'all');
+        }
+
 
 
         // Function to update the info boxes with charging station data
@@ -767,8 +757,8 @@
                         lng: chargingStations[1].coordinates[0],
                         lat: chargingStations[1].coordinates[1]
                     };
-                    await fetchAndDisplayRoute(startPoint, midPoint, '#555555 '); // Fetch route to charging station
-                    await fetchAndDisplayRoute(midPoint, endPoint, '#555555 ');  // Fetch route from charging station to end
+                    await fetchAndDisplayRoute(startPoint, midPoint, '#555555'); // Fetch route to charging station
+                    await fetchAndDisplayRoute(midPoint, endPoint, '#555555');  // Fetch route from charging station to end
                     break;
                 default:
                     // Direct route from startPoint to endPoint
@@ -884,7 +874,7 @@
                         },
                         geometry: {
                             type: 'Point',
-                            coordinates: [-95.40341113232309, 29.55077176286302]
+                            coordinates: [-95.45314239482269,29.512586594797554]
                         }
                     }
                 ]
@@ -940,22 +930,20 @@
                         removeRoutes();
                         getRoute(chargingStations.indexOf(station) + 1);
 
-                        if(chargingStations.indexOf(station) + 1 == 1){
-                            updateInfoBox(station, 'top-right-info');
-                            const infoBoxes = document.querySelector('#bottom-left-info');
-                            infoBoxes.box.innerHTML = '';
-                            infoBoxes.box.style.display = 'none';
-                        } else {
-                            updateInfoBox(station, 'bottom-left-info');
-                            const infoBoxes = document.querySelector('#top-right-info');
-                            infoBoxes.box.innerHTML = '';
-                            infoBoxes.box.style.display = 'none';
-                        }
+                        // Clear the relevant info box before updating it
+                        const currentBoxId = chargingStations.indexOf(station) + 1 === 1 ? 'top-right-info' : 'bottom-left-info';
+                        const otherBoxId = currentBoxId === 'top-right-info' ? 'bottom-left-info' : 'top-right-info';
+
+                        clearInfoBoxes(otherBoxId);
+
+                        // Update the relevant info box based on the station's index
+                        updateInfoBox(station, currentBoxId);
 
                         logData(`Station Opened`, station.name, null, station.coordinates, mapNum);
                         console.log(`Clicked within buffer zone of ${station.name}`);
                     }
                 });
+
 
             });
 
