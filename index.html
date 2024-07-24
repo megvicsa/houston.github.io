@@ -767,8 +767,8 @@
                         lng: chargingStations[1].coordinates[0],
                         lat: chargingStations[1].coordinates[1]
                     };
-                    await fetchAndDisplayRoute(startPoint, midPoint, '#3b3b3b'); // Fetch route to charging station
-                    await fetchAndDisplayRoute(midPoint, endPoint, '#3b3b3b');  // Fetch route from charging station to end
+                    await fetchAndDisplayRoute(startPoint, midPoint, '#555555 '); // Fetch route to charging station
+                    await fetchAndDisplayRoute(midPoint, endPoint, '#555555 ');  // Fetch route from charging station to end
                     break;
                 default:
                     // Direct route from startPoint to endPoint
@@ -942,8 +942,14 @@
 
                         if(chargingStations.indexOf(station) + 1 == 1){
                             updateInfoBox(station, 'top-right-info');
+                            const infoBoxes = document.querySelector('#bottom-left-info');
+                            infoBoxes.box.innerHTML = '';
+                            infoBoxes.box.style.display = 'none';
                         } else {
                             updateInfoBox(station, 'bottom-left-info');
+                            const infoBoxes = document.querySelector('#top-right-info');
+                            infoBoxes.box.innerHTML = '';
+                            infoBoxes.box.style.display = 'none';
                         }
 
                         logData(`Station Opened`, station.name, null, station.coordinates, mapNum);
