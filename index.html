@@ -98,6 +98,11 @@
             background-color: #8d8d8d;
         }
 
+        .stars {
+            font-size: 24px; /* Adjust this value to make the stars larger */
+            color: #0047AB	;     /* Optional: Change the color of the stars */
+        }
+
 
         .popup-content {
             max-height: 330px;
@@ -212,7 +217,7 @@
             { title: "Estimated Time to Destination", info: "40" },
             { title: "State of Charge of Battery", info: "15% Charge" },
             { title: "Range of Current Battery", info: "45 Minutes" },
-            { title: "Estimated Drive-distance with Current Charge", info: "22.5 Miles" },
+            { title: "Estimated Drive-distance with Current Charge", info: "30 Miles" },
             { title: "Type of Chargin Socket", info: "J1772" },
             { title: "kW Needed to Fully Charge Your Car", info: "51 kW" }
         ];
@@ -256,7 +261,8 @@
                 grocery: 'Yes <br><br> There is a grocery store in walking distance... 1 mile',
                 sportsClothes: 'Yes <br><br> There is a sports or clothing store in walking distance... 0.1 miles',
                 
-                rating: '★ ★ ★ ✰ ✰ <br><br>There are 34 total reviews' 
+                rating: '★ ★ ★ ✰ ✰',
+                ratingNum: '36'
             },
             {
                 coordinates: [-95.466648, 29.710314],
@@ -299,7 +305,8 @@
                 grocery: 'Yes  <br><br> There is a grocery store in walking distance... 0.2 miles',
                 sportsClothes: 'Yes <br><br> There is a sports or clothing store in walking distance... 1.7 miles',
                 
-                rating: 'There are 0 total reviews'
+                rating: '',
+                ratingNum: '0'
             }
         ];
 
@@ -517,7 +524,7 @@
             return `
                     <h3 style="font-size: 20px; margin-top: 0; margin-bottom: 10px;">${station.name}</h3>
                     <img src="${decodeURIComponent(encodedImageUrl)}" alt="${station.name}" style="width:100%;max-width:300px;">
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'location', '${station.location}')">Location</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'location', '${station.location}', '${boxId}')">Location</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'originDistance', '${station.originDistance} miles, <br><br>The distance from your location to ${station.name} is... ${station.originDistance} miles', '${boxId}')">Distance from My Location</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'originTime', '${station.originTime} minutes, <br><br>The estimated travel time from your location to ${station.name} is... ${station.originTime} minutes', '${boxId}')">Travel Time from My Location</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'destDistance', '${station.destDistance} miles, <br><br>The distance from ${station.name} to the destination is... ${station.destDistance} miles', '${boxId}')">Distance to Destination</button>
@@ -525,7 +532,7 @@
 
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'waitTime', '${waitTimeDetails}', '${boxId}')">Wait Time at Station</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'plugs', '${plugDetails}', '${boxId}')">Plugs Available at Station</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'chargeTime', '${chargeTimeDetails}, ${boxId}', '${boxId}')">Charge Time</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'chargeTime', '${chargeTimeDetails}', '${boxId}')">Charge Time</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'socketAvalability', '${socketAvailabilityDetails}', '${boxId}')">Socket Availability</button>
 
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'energySource', '${station.energySource}', '${boxId}')">Energy Source at Station</button>
@@ -534,7 +541,7 @@
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'coffee', '${station.coffee}', '${boxId}')">Coffee Shop</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'grocery', '${station.grocery}', '${boxId}')">Grocery Store</button>
                     <button class="popup-button" onclick="showMoreInfo('${station.name}', 'sportsClothes', '${station.sportsClothes}', '${boxId}')">Sport/Clothing Store</button>
-                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'rating', '${station.rating}', '${boxId}')">Rating</button>
+                    <button class="popup-button" onclick="showMoreInfo('${station.name}', 'rating', '', '${boxId}')">Rating</button>
                 `;
         }
 
@@ -576,7 +583,13 @@
         function showMoreInfo(stationName, infoType, infoContent, boxId) {
             logData(`Button Clicked`, `${stationName}`, `${infoType}`, null, mapNum);
 
-            const content = `<p style="font-size: 16px; padding: 5px;">${infoContent}</p>`;
+            const station = chargingStations.find(station => station.name === stationName);
+            content = `<p style="font-size: 16px; padding: 5px;">${infoContent}</p>`;
+
+            if (infoType === 'rating') {
+                content = `<p style="font-size: 16px; padding: 5px;"><span class="stars">${station.rating}</span> <br><br> There are ${station.ratingNum} total reviews</p>`;
+                console.log('Rating clicked');
+            }
 
             const infoBox = document.getElementById(boxId);
             infoBox.innerHTML = `
